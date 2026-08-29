@@ -1,630 +1,975 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>PayShield AI | Fraud Detection</title>
+    <title>PayShield AI</title>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+    <style>
 
-    body {
-        font-family: Arial, sans-serif;
-        background: #07111f;
-        color: white;
-        min-height: 100vh;
-    }
-
-    .container {
-        width: 92%;
-        max-width: 1200px;
-        margin: auto;
-    }
-
-    header {
-        padding: 20px 0;
-        border-bottom: 1px solid #203047;
-    }
-
-    .nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .logo {
-        width: 45px;
-        height: 45px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #2563eb;
-        font-size: 23px;
-    }
-
-    .brand h1 {
-        font-size: 21px;
-    }
-
-    .brand span {
-        color: #94a3b8;
-        font-size: 12px;
-    }
-
-    .status {
-        color: #86efac;
-        font-weight: bold;
-    }
-
-    .hero {
-        padding: 50px 0 30px;
-    }
-
-    .hero h2 {
-        font-size: 48px;
-        margin-bottom: 15px;
-    }
-
-    .gradient {
-        color: #38bdf8;
-    }
-
-    .hero p {
-        color: #94a3b8;
-        line-height: 1.7;
-        max-width: 700px;
-    }
-
-    .stats {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-        margin-bottom: 25px;
-    }
-
-    .stat {
-        background: #0f1d30;
-        border: 1px solid #203047;
-        border-radius: 15px;
-        padding: 20px;
-    }
-
-    .stat-label {
-        color: #94a3b8;
-        font-size: 12px;
-    }
-
-    .stat-value {
-        font-size: 30px;
-        font-weight: bold;
-        margin-top: 10px;
-    }
-
-    .main-grid {
-        display: grid;
-        grid-template-columns: 1.5fr 0.8fr;
-        gap: 20px;
-    }
-
-    .card {
-        background: #0f1d30;
-        border: 1px solid #203047;
-        border-radius: 18px;
-        padding: 25px;
-    }
-
-    .card h3 {
-        margin-bottom: 7px;
-    }
-
-    .card p {
-        color: #64748b;
-        font-size: 13px;
-        margin-bottom: 20px;
-    }
-
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-    }
-
-    label {
-        display: block;
-        color: #cbd5e1;
-        font-size: 12px;
-        font-weight: bold;
-        margin-bottom: 7px;
-    }
-
-    input {
-        width: 100%;
-        padding: 12px;
-        border-radius: 9px;
-        border: 1px solid #263b55;
-        background: #091524;
-        color: white;
-        outline: none;
-        margin-bottom: 12px;
-    }
-
-    input:focus {
-        border-color: #3b82f6;
-    }
-
-    .features-title {
-        margin: 10px 0 12px;
-        font-weight: bold;
-    }
-
-    .features {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 8px;
-    }
-
-    .buttons {
-        display: flex;
-        gap: 10px;
-        margin: 18px 0;
-    }
-
-    button {
-        border: none;
-        border-radius: 9px;
-        padding: 12px 16px;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    .test-btn {
-        background: #17283d;
-        color: #cbd5e1;
-        border: 1px solid #29415e;
-    }
-
-    .analyze-btn {
-        width: 100%;
-        background: #2563eb;
-        color: white;
-        font-size: 15px;
-    }
-
-    .analyze-btn:disabled {
-        opacity: 0.6;
-    }
-
-    .result {
-        text-align: center;
-    }
-
-    .result-icon {
-        font-size: 60px;
-        margin: 30px 0 15px;
-    }
-
-    .result-title {
-        font-size: 21px;
-        font-weight: bold;
-    }
-
-    .result-subtitle {
-        color: #94a3b8;
-        margin-top: 8px;
-    }
-
-    .probability {
-        font-size: 42px;
-        font-weight: bold;
-        margin: 25px 0 10px;
-    }
-
-    .risk {
-        display: inline-block;
-        padding: 8px 15px;
-        border-radius: 20px;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
-
-    .recommendation {
-        background: #091524;
-        border: 1px solid #203047;
-        padding: 15px;
-        border-radius: 10px;
-        color: #cbd5e1;
-        line-height: 1.5;
-    }
-
-    .history-card {
-        margin-top: 20px;
-    }
-
-    .history-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .history-buttons {
-        display: flex;
-        gap: 10px;
-    }
-
-    .table-wrapper {
-        overflow-x: auto;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    th,
-    td {
-        padding: 13px;
-        border-bottom: 1px solid #203047;
-        text-align: left;
-    }
-
-    th {
-        color: #64748b;
-        font-size: 12px;
-    }
-
-    td {
-        color: #cbd5e1;
-        font-size: 13px;
-    }
-
-    .chart-box {
-        width: 100%;
-        height: 300px;
-        margin-top: 25px;
-    }
-
-    footer {
-        text-align: center;
-        padding: 35px;
-        color: #64748b;
-    }
-
-    .loading {
-        display: none;
-        text-align: center;
-        color: #60a5fa;
-        margin-top: 10px;
-    }
-
-    @media(max-width: 900px) {
-
-        .stats {
-            grid-template-columns: 1fr 1fr;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        .main-grid {
-            grid-template-columns: 1fr;
+        body {
+            font-family: Arial, sans-serif;
+            background: #07111f;
+            color: white;
+            min-height: 100vh;
         }
 
-        .features {
-            grid-template-columns: repeat(3, 1fr);
+        .container {
+            width: 92%;
+            max-width: 1150px;
+            margin: auto;
         }
-    }
 
-    @media(max-width: 600px) {
+        /* ================= HEADER ================= */
+
+        header {
+            padding: 15px 0;
+            border-bottom: 1px solid #1e334c;
+            background: #07111f;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2563eb;
+            font-size: 23px;
+        }
+
+        .brand h1 {
+            font-size: 21px;
+        }
+
+        .brand span {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .status {
+            color: #86efac;
+            font-size: 13px;
+        }
+
+        /* ================= NAVIGATION ================= */
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 0;
+            border-bottom: 1px solid #1e334c;
+            background: #091524;
+            position: sticky;
+            top: 76px;
+            z-index: 99;
+        }
+
+        .nav-button {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid transparent;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .nav-button:hover,
+        .nav-button.active {
+            background: #17283d;
+            color: #60a5fa;
+            border-color: #263b55;
+        }
+
+        /* ================= PAGES ================= */
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            padding: 50px 0 30px;
+        }
 
         .hero h2 {
-            font-size: 35px;
+            font-size: 48px;
+            margin-bottom: 15px;
         }
 
+        .gradient {
+            color: #38bdf8;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            max-width: 750px;
+            line-height: 1.7;
+        }
+
+        /* ================= STATS ================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat {
+            background: #0f1d30;
+            border: 1px solid #1e334c;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .stat-title {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* ================= CARDS ================= */
+
+        .card {
+            background: #0f1d30;
+            border: 1px solid #1e334c;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .card h3 {
+            margin-bottom: 7px;
+        }
+
+        .card-description {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        /* ================= FORM ================= */
+
         .form-grid {
-            grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            color: #cbd5e1;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #091524;
+            color: white;
+            border: 1px solid #263b55;
+            border-radius: 9px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #3b82f6;
+        }
+
+        .features-title {
+            margin: 20px 0 12px;
+            font-weight: bold;
         }
 
         .features {
-            grid-template-columns: 1fr 1fr;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
         }
 
-        .stats {
-            grid-template-columns: 1fr 1fr;
+        /* ================= BUTTONS ================= */
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
         }
-    }
-</style>
-```
+
+        button {
+            padding: 12px 15px;
+            border-radius: 9px;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+
+        .test-button {
+            background: #17283d;
+            color: #cbd5e1;
+            border: 1px solid #263b55;
+        }
+
+        .test-button:hover {
+            background: #203650;
+        }
+
+        .analyze {
+            width: 100%;
+            margin-top: 15px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+        }
+
+        .analyze:hover {
+            background: #1d4ed8;
+        }
+
+        .analyze:disabled {
+            opacity: 0.6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .download {
+            background: #2563eb;
+            color: white;
+        }
+
+        .clear {
+            background: #7f1d1d;
+            color: white;
+        }
+
+        /* ================= RESULT ================= */
+
+        .result {
+            text-align: center;
+        }
+
+        .shield {
+            font-size: 55px;
+            margin: 30px 0 15px;
+        }
+
+        .result-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .result-subtitle {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .probability {
+            font-size: 45px;
+            font-weight: bold;
+            margin: 25px 0 10px;
+        }
+
+        .risk {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: #17283d;
+            color: #86efac;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .risk.high {
+            color: #fca5a5;
+            background: #3b1111;
+        }
+
+        .risk.low {
+            color: #86efac;
+        }
+
+        .recommendation {
+            margin-top: 25px;
+            background: #091524;
+            border: 1px solid #1e334c;
+            padding: 15px;
+            border-radius: 10px;
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #60a5fa;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        /* ================= ANALYSIS LAYOUT ================= */
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 0.8fr;
+            gap: 20px;
+        }
+
+        /* ================= TABLE ================= */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #1e334c;
+            font-size: 13px;
+        }
+
+        th {
+            color: #64748b;
+        }
+
+        .low {
+            color: #86efac;
+            font-weight: bold;
+        }
+
+        .high {
+            color: #fca5a5;
+            font-weight: bold;
+        }
+
+        .medium {
+            color: #fde68a;
+            font-weight: bold;
+        }
+
+        /* ================= ANALYTICS ================= */
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .chart-container {
+            height: 350px;
+            position: relative;
+        }
+
+        .analytics-number {
+            font-size: 40px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .analytics-label {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* ================= ABOUT ================= */
+
+        .about-section {
+            line-height: 1.8;
+            color: #cbd5e1;
+        }
+
+        .about-section h3 {
+            color: #60a5fa;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        .about-section ul {
+            margin-left: 25px;
+        }
+
+        .architecture {
+            background: #091524;
+            border: 1px solid #263b55;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-family: monospace;
+            color: #93c5fd;
+            line-height: 2;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            text-align: center;
+            color: #475569;
+            padding: 30px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 850px) {
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .analysis-grid,
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .navigation {
+                flex-wrap: wrap;
+            }
+
+        }
+
+        @media(max-width: 600px) {
+
+            .hero h2 {
+                font-size: 35px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .nav {
+                flex-direction: column;
+            }
+
+            table {
+                font-size: 11px;
+            }
+
+            th,
+            td {
+                padding: 8px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
+
 <body>
 
+
+<!-- ================= HEADER ================= -->
+
 <header>
+
     <div class="container nav">
 
-```
-    <div class="brand">
+        <div class="brand">
 
-        <div class="logo">🛡️</div>
+            <div class="logo">
+                🛡️
+            </div>
 
-        <div>
-            <h1>PayShield AI</h1>
-            <span>Intelligent Payment Protection</span>
+            <div>
+
+                <h1>PayShield AI</h1>
+
+                <span>
+                    Intelligent Payment Protection
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="status">
+            🟢 AI Protection Active
         </div>
 
     </div>
-
-    <div class="status">
-        🟢 AI Protection Active
-    </div>
-
-</div>
-```
 
 </header>
 
+
+<!-- ================= NAVIGATION ================= -->
+
+<nav class="navigation">
+
+    <button class="nav-button active"
+            onclick="showPage('dashboard', this)">
+        🏠 Dashboard
+    </button>
+
+    <button class="nav-button"
+            onclick="showPage('analysis', this)">
+        🔍 Analyze
+    </button>
+
+    <button class="nav-button"
+            onclick="showPage('historyPage', this)">
+        🕐 History
+    </button>
+
+    <button class="nav-button"
+            onclick="showPage('analytics', this)">
+        📊 Analytics
+    </button>
+
+    <button class="nav-button"
+            onclick="showPage('about', this)">
+        🛡️ About
+    </button>
+
+</nav>
+
+
 <main class="container">
 
-```
-<section class="hero">
 
-    <h2>
-        Protect every payment with
-        <span class="gradient">intelligent AI.</span>
-    </h2>
-
-    <p>
-        PayShield AI uses an XGBoost machine learning model
-        to detect potentially fraudulent payment transactions.
-    </p>
-
-</section>
-
-
+<!-- ================================================= -->
 <!-- DASHBOARD -->
+<!-- ================================================= -->
 
-<section class="stats">
+<section id="dashboard" class="page active">
 
-    <div class="stat">
-        <div class="stat-label">TOTAL TRANSACTIONS</div>
-        <div class="stat-value" id="totalTransactions">0</div>
-    </div>
+    <section class="hero">
 
-    <div class="stat">
-        <div class="stat-label">FRAUD DETECTED</div>
-        <div class="stat-value" id="fraudTransactions">0</div>
-    </div>
+        <h2>
+            Protect every payment with
+            <span class="gradient">
+                intelligent AI.
+            </span>
+        </h2>
 
-    <div class="stat">
-        <div class="stat-label">LEGITIMATE</div>
-        <div class="stat-value" id="legitimateTransactions">0</div>
-    </div>
+        <p>
+            PayShield AI uses an XGBoost machine learning model
+            to detect potentially fraudulent payment transactions
+            in real time.
+        </p>
 
-    <div class="stat">
-        <div class="stat-label">FRAUD RATE</div>
-        <div class="stat-value" id="fraudRate">0%</div>
+    </section>
+
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <div class="stat-title">
+                TOTAL TRANSACTIONS
+            </div>
+
+            <div class="stat-value" id="total">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                FRAUD DETECTED
+            </div>
+
+            <div class="stat-value" id="fraud">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                LEGITIMATE
+            </div>
+
+            <div class="stat-value" id="legitimate">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                FRAUD RATE
+            </div>
+
+            <div class="stat-value" id="rate">
+                0%
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="card">
+
+        <h3>
+            🛡️ PayShield AI Protection
+        </h3>
+
+        <p class="card-description">
+
+            Intelligent transaction monitoring powered by
+            machine learning.
+
+        </p>
+
+        <div class="about-section">
+
+            <p>
+                PayShield AI analyzes transaction patterns
+                and provides an instant fraud probability,
+                risk level and recommendation.
+            </p>
+
+            <br>
+
+            <p>
+                Use the navigation above to analyze a new
+                transaction, review previous transactions,
+                explore fraud analytics or learn more about
+                the system.
+            </p>
+
+        </div>
+
     </div>
 
 </section>
 
 
-<!-- MAIN -->
+<!-- ================================================= -->
+<!-- ANALYSIS PAGE -->
+<!-- ================================================= -->
 
-<section class="main-grid">
+<section id="analysis" class="page">
 
+    <section class="hero">
 
-    <!-- FORM -->
-
-    <div class="card">
-
-        <h3>🔍 Transaction Analysis</h3>
+        <h2>
+            🔍 Transaction
+            <span class="gradient">
+                Analysis
+            </span>
+        </h2>
 
         <p>
-            Enter transaction details for AI-powered fraud detection.
+            Enter transaction details and let PayShield AI
+            evaluate the transaction using the trained
+            XGBoost fraud detection model.
         </p>
 
+    </section>
 
-        <div class="form-grid">
 
-            <div>
-                <label>Transaction Time</label>
+    <section class="analysis-grid">
 
-                <input
-                    type="number"
-                    id="time"
-                    value="0"
-                >
+
+        <!-- FORM -->
+
+        <div class="card">
+
+            <h3>
+                Transaction Details
+            </h3>
+
+            <p class="card-description">
+                Enter the required transaction information.
+            </p>
+
+
+            <div class="form-grid">
+
+                <div>
+
+                    <label>
+                        Transaction Time
+                    </label>
+
+                    <input
+                        type="number"
+                        id="Time"
+                        value="0"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Transaction Amount (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="Amount"
+                        value="149.62"
+                        step="any"
+                    >
+
+                </div>
+
             </div>
 
 
-            <div>
-                <label>Transaction Amount (₹)</label>
-
-                <input
-                    type="number"
-                    id="amount"
-                    value="149.62"
-                    step="0.01"
-                >
+            <div class="features-title">
+                Transaction Features V1 - V28
             </div>
 
-        </div>
-
-
-        <div class="features-title">
-            Transaction Features V1 - V28
-        </div>
-
-
-        <div
-            class="features"
-            id="features"
-        ></div>
-
-
-        <div class="buttons">
-
-            <button
-                class="test-btn"
-                id="legitimateButton"
-            >
-                🟢 Load Legitimate Test
-            </button>
-
-            <button
-                class="test-btn"
-                id="fraudButton"
-            >
-                🔴 Load Fraud Test
-            </button>
-
-        </div>
-
-
-        <button
-            class="analyze-btn"
-            id="predictButton"
-        >
-            🔍 Analyze Transaction
-        </button>
-
-
-        <div
-            class="loading"
-            id="loading"
-        >
-            ⏳ Analyzing transaction...
-        </div>
-
-    </div>
-
-
-    <!-- RESULT -->
-
-    <div class="card">
-
-        <h3>🛡️ AI Assessment</h3>
-
-        <p>
-            Real-time machine learning prediction
-        </p>
-
-
-        <div class="result">
 
             <div
-                class="result-icon"
-                id="resultIcon"
-            >
+                class="features"
+                id="features">
+            </div>
+
+
+            <div class="buttons">
+
+                <button
+                    class="test-button"
+                    onclick="loadLegitimate()">
+
+                    🟢 Legitimate Test
+
+                </button>
+
+
+                <button
+                    class="test-button"
+                    onclick="loadFraud()">
+
+                    🔴 Fraud Test
+
+                </button>
+
+            </div>
+
+
+            <button
+                class="analyze"
+                id="analyzeButton"
+                onclick="analyzeTransaction()">
+
+                🔍 Analyze Transaction
+
+            </button>
+
+
+            <div
+                class="loading"
+                id="loading">
+
+                ⏳ Analyzing transaction...
+
+            </div>
+
+        </div>
+
+
+        <!-- RESULT -->
+
+        <div class="card result">
+
+            <h3>
+                🛡️ AI Assessment
+            </h3>
+
+            <p class="card-description">
+                Real-time machine learning prediction
+            </p>
+
+
+            <div
+                class="shield"
+                id="shield">
+
                 🛡️
+
             </div>
 
 
             <div
                 class="result-title"
-                id="resultTitle"
-            >
+                id="resultTitle">
+
                 Awaiting Analysis
+
             </div>
 
 
             <div
                 class="result-subtitle"
-                id="resultSubtitle"
-            >
-                Load a transaction and click Analyze.
+                id="resultSubtitle">
+
+                Submit a transaction to receive
+                a risk assessment.
+
             </div>
 
 
             <div
                 class="probability"
-                id="fraudProbability"
-            >
+                id="probability">
+
                 —
+
             </div>
 
 
             <div
                 class="risk"
-                id="riskLevel"
-            >
+                id="risk">
+
                 NO ASSESSMENT
+
             </div>
 
 
             <div
                 class="recommendation"
-                id="recommendationText"
-            >
-                Your AI assessment will appear here.
+                id="recommendation">
+
+                Your transaction analysis will
+                appear here.
+
             </div>
 
         </div>
 
-    </div>
+    </section>
 
 </section>
 
 
-<!-- HISTORY -->
+<!-- ================================================= -->
+<!-- HISTORY PAGE -->
+<!-- ================================================= -->
 
-<section class="card history-card">
+<section id="historyPage" class="page">
 
-    <div class="history-header">
+    <section class="hero">
 
-        <div>
-            <h3>🕐 Recent Transactions</h3>
+        <h2>
+            🕐 Transaction
+            <span class="gradient">
+                History
+            </span>
+        </h2>
 
-            <p>
-                Transactions analyzed by PayShield AI.
-            </p>
-        </div>
+        <p>
+            Review transactions previously analyzed by
+            PayShield AI.
+        </p>
+
+    </section>
 
 
-        <div class="history-buttons">
+    <section class="card">
+
+        <h3>
+            Recent Transactions
+        </h3>
+
+        <p class="card-description">
+            The latest analyzed transactions are stored
+            locally in your browser.
+        </p>
+
+
+        <div class="action-buttons">
 
             <button
-                class="test-btn"
-                id="exportButton"
-            >
+                class="download"
+                onclick="downloadReport()">
+
                 📥 Download Report
+
             </button>
 
+
             <button
-                class="test-btn"
-                id="clearButton"
-            >
+                class="clear"
+                onclick="clearHistory()">
+
                 🗑️ Clear History
+
             </button>
 
         </div>
 
-    </div>
-
-
-    <div class="table-wrapper">
 
         <table>
 
             <thead>
 
                 <tr>
+
                     <th>#</th>
                     <th>Date</th>
                     <th>Time</th>
@@ -632,538 +977,910 @@
                     <th>Result</th>
                     <th>Risk</th>
                     <th>Fraud Probability</th>
+
                 </tr>
 
             </thead>
 
 
-            <tbody id="transactionHistory">
-
-                <tr>
-                    <td
-                        colspan="7"
-                        style="text-align:center"
-                    >
-                        No transactions analyzed yet.
-                    </td>
-                </tr>
+            <tbody id="history">
 
             </tbody>
 
         </table>
 
-    </div>
+    </section>
 
 </section>
 
 
-<!-- CHART -->
+<!-- ================================================= -->
+<!-- ANALYTICS PAGE -->
+<!-- ================================================= -->
 
-<section class="card history-card">
+<section id="analytics" class="page">
 
-    <h3>📊 Fraud Analytics</h3>
+    <section class="hero">
 
-    <p>
-        Visual summary of analyzed transactions.
-    </p>
+        <h2>
+            📊 Fraud
+            <span class="gradient">
+                Analytics
+            </span>
+        </h2>
+
+        <p>
+            Visual summary of analyzed transactions and
+            fraud detection results.
+        </p>
+
+    </section>
 
 
-    <div class="chart-box">
+    <section class="analytics-grid">
 
-        <canvas id="fraudChart"></canvas>
 
-    </div>
+        <div class="card">
+
+            <h3>
+                Fraud vs Legitimate
+            </h3>
+
+            <p class="card-description">
+                Distribution of analyzed transactions.
+            </p>
+
+            <div class="chart-container">
+
+                <canvas id="fraudChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Transaction Statistics
+            </h3>
+
+
+            <div>
+
+                <div class="analytics-number"
+                     id="analyticsTotal">
+                    0
+                </div>
+
+                <div class="analytics-label">
+                    Total Transactions
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+            <div>
+
+                <div class="analytics-number"
+                     id="analyticsFraud">
+                    0
+                </div>
+
+                <div class="analytics-label">
+                    Fraudulent Transactions
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+            <div>
+
+                <div class="analytics-number"
+                     id="analyticsLegitimate">
+                    0
+                </div>
+
+                <div class="analytics-label">
+                    Legitimate Transactions
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+            <div>
+
+                <div class="analytics-number"
+                     id="analyticsRate">
+                    0%
+                </div>
+
+                <div class="analytics-label">
+                    Fraud Detection Rate
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
 
 </section>
-```
+
+
+<!-- ================================================= -->
+<!-- ABOUT PAGE -->
+<!-- ================================================= -->
+
+<section id="about" class="page">
+
+    <section class="hero">
+
+        <h2>
+            🛡️ About
+            <span class="gradient">
+                PayShield AI
+            </span>
+        </h2>
+
+        <p>
+            An AI-powered payment fraud detection system
+            designed to identify potentially fraudulent
+            transactions.
+        </p>
+
+    </section>
+
+
+    <section class="card about-section">
+
+        <h3>
+            What is PayShield AI?
+        </h3>
+
+        <p>
+            PayShield AI is a machine learning based payment
+            fraud detection application. It analyzes transaction
+            characteristics and predicts whether a transaction
+            is potentially fraudulent.
+        </p>
+
+
+        <h3>
+            Why PayShield AI?
+        </h3>
+
+        <p>
+            Traditional fraud detection systems often depend
+            heavily on manually defined rules. Such systems can
+            struggle when fraud patterns change over time.
+            PayShield AI uses machine learning to identify
+            patterns from historical transaction data and
+            provide probability-based risk assessment.
+        </p>
+
+
+        <h3>
+            Machine Learning Model
+        </h3>
+
+        <p>
+            The application uses an XGBoost classification model.
+            XGBoost is well suited for structured and tabular
+            transaction data and can capture complex relationships
+            between transaction features.
+        </p>
+
+
+        <h3>
+            How the System Works
+        </h3>
+
+        <div class="architecture">
+
+            User enters transaction details
+            <br>
+            ↓
+            <br>
+            Frontend sends data to backend
+            <br>
+            ↓
+            <br>
+            Data preprocessing and scaling
+            <br>
+            ↓
+            <br>
+            XGBoost fraud prediction
+            <br>
+            ↓
+            <br>
+            Fraud probability calculation
+            <br>
+            ↓
+            <br>
+            Risk classification
+            <br>
+            ↓
+            <br>
+            Result displayed to user
+
+        </div>
+
+
+        <h3>
+            Technologies Used
+        </h3>
+
+        <ul>
+
+            <li>Python</li>
+
+            <li>FastAPI</li>
+
+            <li>XGBoost</li>
+
+            <li>Scikit-learn</li>
+
+            <li>HTML</li>
+
+            <li>CSS</li>
+
+            <li>JavaScript</li>
+
+            <li>Chart.js</li>
+
+            <li>Local Storage</li>
+
+        </ul>
+
+
+        <h3>
+            Key Features
+        </h3>
+
+        <ul>
+
+            <li>Real-time fraud prediction</li>
+
+            <li>XGBoost machine learning model</li>
+
+            <li>Fraud probability estimation</li>
+
+            <li>Risk-level classification</li>
+
+            <li>Transaction history</li>
+
+            <li>CSV report download</li>
+
+            <li>Clear history functionality</li>
+
+            <li>Fraud analytics visualization</li>
+
+        </ul>
+
+    </section>
+
+</section>
+
 
 </main>
 
+
 <footer>
 
-```
-🛡️ PayShield AI • AI-Powered Payment Fraud Detection
-```
+    🛡️ PayShield AI
+    • AI-Powered Payment Fraud Detection
+
+    <br><br>
+
+    © 2026 PayShield AI
 
 </footer>
 
+
 <script>
 
-const legitimateValues = [
-    -1.359807, -0.072781, 2.536347, 1.378155,
-    -0.338321, 0.462388, 0.239599, 0.098698,
-    0.363787, 0.090794, -0.551600, -0.617801,
-    -0.991390, -0.311169, 1.468177, -0.470400,
-    0.207971, 0.025791, 0.403993, 0.251412,
-    -0.018307, 0.277838, -0.110474, 0.066928,
-    0.128539, -0.189115, 0.133558, -0.021053
-];
+
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
+
+function showPage(pageId, button) {
+
+    const pages =
+        document.querySelectorAll(".page");
+
+    pages.forEach(page => {
+
+        page.classList.remove("active");
+
+    });
 
 
-const fraudValues = [
-    -2.312227, 1.951992, -1.609851, 3.997906,
-    -0.522188, -1.426545, -2.537387, 1.391657,
-    -2.770089, -2.772272, 3.202033, -2.899907,
-    -0.595222, -4.289254, 0.389724, -1.140747,
-    -2.830056, -0.016822, 0.416956, 0.126911,
-    0.517232, -0.035049, -0.465211, 0.320198,
-    0.044519, 0.177840, 0.261145, -0.143276
-];
+    const selectedPage =
+        document.getElementById(pageId);
+
+    selectedPage.classList.add("active");
 
 
-const featuresContainer =
-    document.getElementById("features");
+    const buttons =
+        document.querySelectorAll(".nav-button");
+
+    buttons.forEach(btn => {
+
+        btn.classList.remove("active");
+
+    });
 
 
-const predictButton =
-    document.getElementById("predictButton");
+    button.classList.add("active");
 
 
-const loading =
-    document.getElementById("loading");
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
 
-const historyElement =
-    document.getElementById("transactionHistory");
+    if (pageId === "analytics") {
 
+        updateAnalytics();
 
-let transactionHistoryData =
-    JSON.parse(
-        localStorage.getItem("payshieldTransactions")
-    ) || [];
+    }
 
-
-let fraudChart = null;
-
-
-/* CREATE V1-V28 */
-
-for (let i = 1; i <= 28; i++) {
-
-    const wrapper =
-        document.createElement("div");
-
-    wrapper.innerHTML = `
-        <label>V${i}</label>
-        <input
-            type="number"
-            step="any"
-            id="V${i}"
-        >
-    `;
-
-    featuresContainer.appendChild(wrapper);
 }
 
 
-/* LOAD DATA */
+/* =====================================================
+   CREATE V1 - V28 INPUTS
+===================================================== */
 
-function loadData(values, time, amount) {
+const featureContainer =
+    document.getElementById("features");
 
-    document.getElementById("time").value =
-        time;
 
-    document.getElementById("amount").value =
-        amount;
+for (let i = 1; i <= 28; i++) {
+
+    const div =
+        document.createElement("div");
+
+    div.className = "feature";
+
+    div.innerHTML = `
+        <label>V${i}</label>
+
+        <input
+            type="number"
+            id="V${i}"
+            value="0"
+            step="any"
+        >
+    `;
+
+    featureContainer.appendChild(div);
+
+}
+
+
+/* =====================================================
+   TEST DATA
+===================================================== */
+
+const legitimateData = {
+
+    Time: 0,
+    Amount: 149.62,
+
+    V1: 1.072,
+    V2: -0.343,
+    V3: 1.001,
+    V4: 1.380,
+    V5: -0.344,
+    V6: 0.462,
+    V7: -0.089,
+    V8: 0.304,
+    V9: 0.348,
+    V10: 0.089,
+    V11: 0.172,
+    V12: 0.134,
+    V13: 0.514,
+    V14: -0.451,
+    V15: 1.001,
+    V16: -0.443,
+    V17: 0.008,
+    V18: -0.139,
+    V19: 0.016,
+    V20: 0.012,
+    V21: -0.018,
+    V22: -0.103,
+    V23: -0.113,
+    V24: 0.062,
+    V25: 0.129,
+    V26: -0.189,
+    V27: 0.021,
+    V28: 0.012
+
+};
+
+
+const fraudData = {
+
+    Time: 406,
+    Amount: 0,
+
+    V1: -2.312227,
+    V2: 1.951992,
+    V3: -1.609851,
+    V4: 3.997906,
+    V5: -0.522188,
+    V6: -1.426545,
+    V7: -2.537387,
+    V8: 1.391657,
+    V9: -2.770089,
+    V10: -2.772272,
+    V11: 3.202033,
+    V12: -2.899907,
+    V13: -0.595222,
+    V14: -4.289254,
+    V15: 0.389724,
+    V16: -1.140747,
+    V17: -2.830056,
+    V18: -0.016822,
+    V19: 0.416956,
+    V20: 0.126911,
+    V21: 0.517232,
+    V22: -0.035049,
+    V23: -0.465211,
+    V24: 0.320198,
+    V25: 0.044519,
+    V26: 0.177840,
+    V27: 0.261145,
+    V28: -0.143276
+
+};
+
+
+/* =====================================================
+   LOAD TEST DATA
+===================================================== */
+
+function loadData(data) {
+
+    document.getElementById("Time").value =
+        data.Time;
+
+    document.getElementById("Amount").value =
+        data.Amount;
 
 
     for (let i = 1; i <= 28; i++) {
 
         document.getElementById(`V${i}`).value =
-            values[i - 1];
+            data[`V${i}`];
 
     }
 
 }
 
 
-document.getElementById(
-    "legitimateButton"
-).onclick = function () {
+function loadLegitimate() {
 
-    loadData(
-        legitimateValues,
-        0,
-        149.62
-    );
+    loadData(legitimateData);
 
-};
+}
 
 
-document.getElementById(
-    "fraudButton"
-).onclick = function () {
+function loadFraud() {
 
-    loadData(
-        fraudValues,
-        406,
-        0
-    );
+    loadData(fraudData);
 
-};
+}
 
 
-/* PREDICTION */
+/* =====================================================
+   ANALYZE TRANSACTION
+===================================================== */
 
-predictButton.onclick =
-    async function () {
+async function analyzeTransaction() {
 
-        predictButton.disabled = true;
+    const button =
+        document.getElementById("analyzeButton");
 
-        loading.style.display = "block";
+    const loading =
+        document.getElementById("loading");
 
+    button.disabled = true;
 
-        try {
+    loading.style.display = "block";
 
-            const time =
-                Number(
-                    document.getElementById("time").value
-                );
 
+    const data = {
 
-            const amount =
-                Number(
-                    document.getElementById("amount").value
-                );
+        Time:
+            Number(
+                document.getElementById("Time").value
+            ),
 
-
-            if (!Number.isFinite(time)) {
-
-                throw new Error(
-                    "Please enter a valid transaction time."
-                );
-
-            }
-
-
-            if (
-                !Number.isFinite(amount) ||
-                amount < 0
-            ) {
-
-                throw new Error(
-                    "Please enter a valid transaction amount."
-                );
-
-            }
-
-
-            /*
-                IMPORTANT:
-
-                Backend expects exactly:
-
-                Time
-                V1-V28
-                Amount
-
-                Total = 30 features
-            */
-
-
-            const features = [time];
-
-
-            for (let i = 1; i <= 28; i++) {
-
-                const value =
-                    Number(
-                        document.getElementById(`V${i}`).value
-                    );
-
-
-                if (!Number.isFinite(value)) {
-
-                    throw new Error(
-                        `Please enter a valid value for V${i}.`
-                    );
-
-                }
-
-
-                features.push(value);
-
-            }
-
-
-            features.push(amount);
-
-
-            if (features.length !== 30) {
-
-                throw new Error(
-                    "Exactly 30 features are required."
-                );
-
-            }
-
-
-            const response =
-                await fetch(
-                    "http://127.0.0.1:8000/predict",
-                    {
-
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json",
-
-                            "Accept":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify({
-                                features:
-                                    features
-                            })
-
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.detail ||
-                    data.message ||
-                    "Backend error."
-                );
-
-            }
-
-
-            if (
-                data.status !== "success"
-            ) {
-
-                throw new Error(
-                    data.message ||
-                    "Prediction failed."
-                );
-
-            }
-
-
-            const probability =
-                Number(
-                    data.fraud_probability
-                );
-
-
-            const result =
-                data.result;
-
-
-            displayResult(
-                probability,
-                result,
-                data.risk_level,
-                data.recommendation
-            );
-
-
-            saveTransaction(
-                time,
-                amount,
-                probability,
-                result,
-                data.risk_level
-            );
-
-
-        }
-
-        catch (error) {
-
-            document.getElementById(
-                "resultIcon"
-            ).innerText = "❌";
-
-
-            document.getElementById(
-                "resultTitle"
-            ).innerText =
-                "ANALYSIS FAILED";
-
-
-            document.getElementById(
-                "resultSubtitle"
-            ).innerText =
-                "Unable to process this transaction.";
-
-
-            document.getElementById(
-                "fraudProbability"
-            ).innerText =
-                "—";
-
-
-            document.getElementById(
-                "riskLevel"
-            ).innerText =
-                "ERROR";
-
-
-            document.getElementById(
-                "recommendationText"
-            ).innerText =
-                error.message;
-
-        }
-
-        finally {
-
-            predictButton.disabled = false;
-
-            loading.style.display = "none";
-
-        }
+        Amount:
+            Number(
+                document.getElementById("Amount").value
+            )
 
     };
 
 
-/* DISPLAY RESULT */
+    for (let i = 1; i <= 28; i++) {
 
-function displayResult(
-    probability,
-    result,
-    risk,
-    recommendation
-) {
+        data[`V${i}`] =
+            Number(
+                document.getElementById(`V${i}`).value
+            );
 
-    const percentage =
-        probability * 100;
+    }
 
 
-    document.getElementById(
-        "fraudProbability"
-    ).innerText =
-        percentage.toFixed(2) + "%";
+    try {
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:8000/predict",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(data)
+
+                }
+            );
 
 
-    document.getElementById(
-        "riskLevel"
-    ).innerText =
-        risk + " RISK";
+        const result =
+            await response.json();
 
 
-    document.getElementById(
-        "recommendationText"
-    ).innerText =
-        recommendation;
+        if (!response.ok) {
+
+            throw new Error(
+                result.detail ||
+                result.message ||
+                "Server error"
+            );
+
+        }
 
 
-    if (result === "Fraud") {
+        if (result.status !== "success") {
 
-        document.getElementById(
-            "resultIcon"
-        ).innerText = "🚨";
+            throw new Error(
+                result.message ||
+                "Prediction failed"
+            );
+
+        }
 
 
-        document.getElementById(
-            "resultTitle"
-        ).innerText =
+        showResult(result);
+
+        saveTransaction(result);
+
+    }
+
+
+    catch (error) {
+
+        document.getElementById("shield")
+            .textContent = "❌";
+
+        document.getElementById("resultTitle")
+            .textContent =
+            "ANALYSIS FAILED";
+
+        document.getElementById("resultSubtitle")
+            .textContent =
+            "Unable to process this transaction.";
+
+        document.getElementById("probability")
+            .textContent = "—";
+
+        document.getElementById("risk")
+            .textContent = "ERROR";
+
+        document.getElementById("recommendation")
+            .textContent =
+            error.message;
+
+    }
+
+
+    finally {
+
+        button.disabled = false;
+
+        loading.style.display = "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   SHOW RESULT
+===================================================== */
+
+function showResult(result) {
+
+    const probability =
+        Number(result.fraud_probability) * 100;
+
+
+    const fraud =
+        result.is_fraud === true;
+
+
+    document.getElementById("probability")
+        .textContent =
+        probability.toFixed(2) + "%";
+
+
+    document.getElementById("risk")
+        .textContent =
+        result.risk_level + " RISK";
+
+
+    document.getElementById("recommendation")
+        .textContent =
+        result.recommendation;
+
+
+    if (fraud) {
+
+        document.getElementById("shield")
+            .textContent = "🚨";
+
+        document.getElementById("resultTitle")
+            .textContent =
             "TRANSACTION FLAGGED";
 
-
-        document.getElementById(
-            "resultSubtitle"
-        ).innerText =
+        document.getElementById("resultSubtitle")
+            .textContent =
             "Potential fraudulent activity detected.";
+
+        document.getElementById("risk")
+            .className =
+            "risk high";
 
     }
 
     else {
 
-        document.getElementById(
-            "resultIcon"
-        ).innerText = "🛡️";
+        document.getElementById("shield")
+            .textContent = "🛡️";
 
-
-        document.getElementById(
-            "resultTitle"
-        ).innerText =
+        document.getElementById("resultTitle")
+            .textContent =
             "TRANSACTION VERIFIED";
 
-
-        document.getElementById(
-            "resultSubtitle"
-        ).innerText =
+        document.getElementById("resultSubtitle")
+            .textContent =
             "No significant fraud indicators detected.";
+
+        document.getElementById("risk")
+            .className =
+            "risk low";
 
     }
 
 }
 
 
-/* SAVE */
+/* =====================================================
+   HISTORY
+===================================================== */
 
-function saveTransaction(
-    time,
-    amount,
-    probability,
-    result,
-    risk
-) {
+function getHistory() {
 
-    transactionHistoryData.unshift({
-
-        time: time,
-
-        amount: amount,
-
-        probability: probability,
-
-        result: result,
-
-        risk: risk,
-
-        date:
-            new Date().toLocaleString()
-
-    });
-
-
-    transactionHistoryData =
-        transactionHistoryData.slice(
-            0,
-            50
-        );
-
-
-    localStorage.setItem(
-        "payshieldTransactions",
-        JSON.stringify(
-            transactionHistoryData
-        )
+    return JSON.parse(
+        localStorage.getItem(
+            "payshield_history"
+        ) || "[]"
     );
-
-
-    updateDashboard();
-
-    displayHistory();
 
 }
 
 
-/* DASHBOARD */
+/* =====================================================
+   SAVE TRANSACTION
+===================================================== */
+
+function saveTransaction(result) {
+
+    const history =
+        getHistory();
+
+
+    history.unshift({
+
+        date:
+            new Date().toLocaleDateString(),
+
+        time:
+            document.getElementById("Time").value,
+
+        amount:
+            document.getElementById("Amount").value,
+
+        fraud:
+            result.is_fraud,
+
+        probability:
+            Number(result.fraud_probability) * 100,
+
+        risk:
+            result.risk_level
+
+    });
+
+
+    localStorage.setItem(
+        "payshield_history",
+        JSON.stringify(
+            history.slice(0, 20)
+        )
+    );
+
+
+    displayHistory();
+
+    updateDashboard();
+
+}
+
+
+/* =====================================================
+   DISPLAY HISTORY
+===================================================== */
+
+function displayHistory() {
+
+    const history =
+        getHistory();
+
+
+    const table =
+        document.getElementById("history");
+
+
+    table.innerHTML = "";
+
+
+    if (history.length === 0) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td colspan="7"
+                    style="text-align:center;color:#64748b">
+
+                    No transactions analyzed yet.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        updateDashboard();
+
+        return;
+
+    }
+
+
+    history.forEach((item, index) => {
+
+        const row =
+            document.createElement("tr");
+
+
+        let riskClass = "low";
+
+        if (item.risk === "CRITICAL") {
+
+            riskClass = "high";
+
+        }
+
+        else if (item.risk === "HIGH") {
+
+            riskClass = "high";
+
+        }
+
+        else if (item.risk === "MEDIUM") {
+
+            riskClass = "medium";
+
+        }
+
+
+        row.innerHTML = `
+
+            <td>${index + 1}</td>
+
+            <td>${item.date || "-"}</td>
+
+            <td>${item.time}</td>
+
+            <td>
+                ₹${Number(item.amount).toFixed(2)}
+            </td>
+
+            <td class="${item.fraud ? "high" : "low"}">
+
+                ${item.fraud
+                    ? "🔴 Fraud"
+                    : "🟢 Legitimate"}
+
+            </td>
+
+            <td class="${riskClass}">
+
+                ${item.risk || "LOW"}
+
+            </td>
+
+            <td>
+
+                ${Number(item.probability).toFixed(2)}%
+
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+
+    updateDashboard();
+
+}
+
+
+/* =====================================================
+   UPDATE DASHBOARD
+===================================================== */
 
 function updateDashboard() {
 
+    const history =
+        getHistory();
+
+
     const total =
-        transactionHistoryData.length;
+        history.length;
 
 
     const fraud =
-        transactionHistoryData.filter(
-            item =>
-                item.result === "Fraud"
+        history.filter(
+            item => item.fraud
         ).length;
 
 
@@ -1172,32 +1889,48 @@ function updateDashboard() {
 
 
     const rate =
-        total === 0
-            ? 0
-            : (fraud / total) * 100;
+        total
+            ? (fraud / total) * 100
+            : 0;
 
 
-    document.getElementById(
-        "totalTransactions"
-    ).innerText =
+    document.getElementById("total")
+        .textContent =
         total;
 
 
-    document.getElementById(
-        "fraudTransactions"
-    ).innerText =
+    document.getElementById("fraud")
+        .textContent =
         fraud;
 
 
-    document.getElementById(
-        "legitimateTransactions"
-    ).innerText =
+    document.getElementById("legitimate")
+        .textContent =
         legitimate;
 
 
-    document.getElementById(
-        "fraudRate"
-    ).innerText =
+    document.getElementById("rate")
+        .textContent =
+        rate.toFixed(2) + "%";
+
+
+    document.getElementById("analyticsTotal")
+        .textContent =
+        total;
+
+
+    document.getElementById("analyticsFraud")
+        .textContent =
+        fraud;
+
+
+    document.getElementById("analyticsLegitimate")
+        .textContent =
+        legitimate;
+
+
+    document.getElementById("analyticsRate")
+        .textContent =
         rate.toFixed(2) + "%";
 
 
@@ -1209,96 +1942,20 @@ function updateDashboard() {
 }
 
 
-/* HISTORY */
+/* =====================================================
+   CHART
+===================================================== */
 
-function displayHistory() {
+let fraudChart = null;
 
-    if (
-        transactionHistoryData.length === 0
-    ) {
-
-        historyElement.innerHTML = `
-            <tr>
-                <td colspan="7"
-                    style="text-align:center">
-                    No transactions analyzed yet.
-                </td>
-            </tr>
-        `;
-
-        return;
-
-    }
-
-
-    historyElement.innerHTML = "";
-
-
-    transactionHistoryData.forEach(
-        (transaction, index) => {
-
-            const row =
-                document.createElement("tr");
-
-
-            const percentage =
-                (
-                    transaction.probability * 100
-                ).toFixed(2);
-
-
-            row.innerHTML = `
-
-                <td>${index + 1}</td>
-
-                <td>${transaction.date}</td>
-
-                <td>${transaction.time}</td>
-
-                <td>
-                    ₹${Number(
-                        transaction.amount
-                    ).toFixed(2)}
-                </td>
-
-                <td>
-                    ${
-                        transaction.result === "Fraud"
-                            ? "🔴 Fraud"
-                            : "🟢 Legitimate"
-                    }
-                </td>
-
-                <td>
-                    ${transaction.risk}
-                </td>
-
-                <td>
-                    ${percentage}%
-                </td>
-
-            `;
-
-
-            historyElement.appendChild(row);
-
-        }
-    );
-
-}
-
-
-/* CHART */
 
 function updateChart(
-    fraud,
-    legitimate
+    fraudCount,
+    legitimateCount
 ) {
 
     const canvas =
-        document.getElementById(
-            "fraudChart"
-        );
+        document.getElementById("fraudChart");
 
 
     if (!canvas) {
@@ -1306,6 +1963,21 @@ function updateChart(
         return;
 
     }
+
+
+    if (typeof Chart === "undefined") {
+
+        console.error(
+            "Chart.js is not loaded."
+        );
+
+        return;
+
+    }
+
+
+    const context =
+        canvas.getContext("2d");
 
 
     if (fraudChart) {
@@ -1317,7 +1989,7 @@ function updateChart(
 
     fraudChart =
         new Chart(
-            canvas,
+            context,
             {
 
                 type: "doughnut",
@@ -1334,8 +2006,8 @@ function updateChart(
                         {
 
                             data: [
-                                fraud,
-                                legitimate
+                                fraudCount,
+                                legitimateCount
                             ],
 
                             backgroundColor: [
@@ -1381,64 +2053,45 @@ function updateChart(
 }
 
 
-/* CLEAR HISTORY */
+/* =====================================================
+   ANALYTICS
+===================================================== */
 
-document.getElementById(
-    "clearButton"
-).onclick = function () {
+function updateAnalytics() {
 
-    if (
-        transactionHistoryData.length === 0
-    ) {
-
-        alert(
-            "There is no transaction history."
-        );
-
-        return;
-
-    }
+    const history =
+        getHistory();
 
 
-    if (
-        !confirm(
-            "Are you sure you want to clear all transaction history?"
-        )
-    ) {
-
-        return;
-
-    }
+    const fraud =
+        history.filter(
+            item => item.fraud
+        ).length;
 
 
-    transactionHistoryData = [];
+    const legitimate =
+        history.length - fraud;
 
 
-    localStorage.removeItem(
-        "payshieldTransactions"
+    updateChart(
+        fraud,
+        legitimate
     );
 
-
-    updateDashboard();
-
-    displayHistory();
-
-    alert(
-        "Transaction history cleared."
-    );
-
-};
+}
 
 
-/* EXPORT REPORT */
+/* =====================================================
+   DOWNLOAD REPORT
+===================================================== */
 
-document.getElementById(
-    "exportButton"
-).onclick = function () {
+function downloadReport() {
 
-    if (
-        transactionHistoryData.length === 0
-    ) {
+    const history =
+        getHistory();
+
+
+    if (history.length === 0) {
 
         alert(
             "No transactions available to download."
@@ -1453,19 +2106,17 @@ document.getElementById(
         "No,Date,Time,Amount,Result,Risk,Fraud Probability\n";
 
 
-    transactionHistoryData.forEach(
-        (transaction, index) => {
+    history.forEach(
+        (item, index) => {
 
             csv +=
                 `${index + 1},` +
-                `"${transaction.date}",` +
-                `${transaction.time},` +
-                `${transaction.amount},` +
-                `${transaction.result},` +
-                `${transaction.risk},` +
-                `${(
-                    transaction.probability * 100
-                ).toFixed(2)}%\n`;
+                `"${item.date || ""}",` +
+                `${item.time},` +
+                `${item.amount},` +
+                `${item.fraud ? "Fraud" : "Legitimate"},` +
+                `${item.risk || "LOW"},` +
+                `${Number(item.probability).toFixed(2)}%\n`;
 
         }
     );
@@ -1491,34 +2142,88 @@ document.getElementById(
 
     link.href = url;
 
+
     link.download =
         "PayShield_AI_Transaction_Report.csv";
 
 
     document.body.appendChild(link);
 
+
     link.click();
+
 
     document.body.removeChild(link);
 
+
     URL.revokeObjectURL(url);
 
-};
+}
 
 
-/* INITIALIZE */
+/* =====================================================
+   CLEAR HISTORY
+===================================================== */
 
-loadData(
-    legitimateValues,
-    0,
-    149.62
-);
+function clearHistory() {
 
-updateDashboard();
+    const history =
+        getHistory();
+
+
+    if (history.length === 0) {
+
+        alert(
+            "There are no transactions to clear."
+        );
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to clear all transaction history?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        "payshield_history"
+    );
+
+
+    displayHistory();
+
+    updateDashboard();
+
+
+    alert(
+        "Transaction history has been cleared."
+    );
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
 
 displayHistory();
 
+updateDashboard();
+
 </script>
 
+
 </body>
+
 </html>
+

@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>PayShield AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #07111f;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid #1e334c;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2563eb;
+            font-size: 23px;
+        }
+
+        .brand h1 {
+            font-size: 21px;
+        }
+
+        .brand span {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .status {
+            color: #86efac;
+            font-size: 13px;
+        }
+
+        .hero {
+            padding: 50px 0 30px;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .gradient {
+            color: #38bdf8;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            max-width: 700px;
+            line-height: 1.7;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat {
+            background: #0f1d30;
+            border: 1px solid #1e334c;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .stat-title {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: 1.4fr 0.8fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: #0f1d30;
+            border: 1px solid #1e334c;
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        .card h3 {
+            margin-bottom: 7px;
+        }
+
+        .card-description {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            color: #cbd5e1;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #091524;
+            color: white;
+            border: 1px solid #263b55;
+            border-radius: 9px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #3b82f6;
+        }
+
+        .features-title {
+            margin: 20px 0 12px;
+            font-weight: bold;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .feature input {
+            margin-bottom: 5px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 15px;
+            border-radius: 9px;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+
+        .test-button {
+            background: #17283d;
+            color: #cbd5e1;
+            border: 1px solid #263b55;
+        }
+
+        .analyze {
+            width: 100%;
+            margin-top: 15px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+        }
+
+        .analyze:hover {
+            background: #1d4ed8;
+        }
+
+        .analyze:disabled {
+            opacity: 0.6;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #60a5fa;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .result {
+            text-align: center;
+        }
+
+        .shield {
+            font-size: 55px;
+            margin: 30px 0 15px;
+        }
+
+        .result-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .result-subtitle {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .probability {
+            font-size: 45px;
+            font-weight: bold;
+            margin: 25px 0 10px;
+        }
+
+        .risk {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: #17283d;
+            color: #86efac;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .recommendation {
+            margin-top: 25px;
+            background: #091524;
+            border: 1px solid #1e334c;
+            padding: 15px;
+            border-radius: 10px;
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .history {
+            margin-top: 25px;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #1e334c;
+            font-size: 13px;
+        }
+
+        th {
+            color: #64748b;
+        }
+
+        .low {
+            color: #86efac;
+            font-weight: bold;
+        }
+
+        .high {
+            color: #fca5a5;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            color: #475569;
+            padding: 30px;
+        }
+
+        @media(max-width: 850px) {
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .main {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+        }
+
+        @media(max-width: 600px) {
+
+            .hero h2 {
+                font-size: 35px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="container nav">
+
+        <div class="brand">
+
+            <div class="logo">
+                🛡️
+            </div>
+
+            <div>
+
+                <h1>PayShield AI</h1>
+
+                <span>
+                    Intelligent Payment Protection
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="status">
+            🟢 AI Protection Active
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+<section class="hero">
+
+    <h2>
+        Protect every payment with
+        <span class="gradient">
+            intelligent AI.
+        </span>
+    </h2>
+
+    <p>
+        PayShield AI uses an XGBoost machine learning model
+        to detect potentially fraudulent payment transactions
+        in real time.
+    </p>
+
+</section>
+
+
+<section class="stats">
+
+    <div class="stat">
+
+        <div class="stat-title">
+            TOTAL TRANSACTIONS
+        </div>
+
+        <div class="stat-value"
+             id="total">
+            0
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-title">
+            FRAUD DETECTED
+        </div>
+
+        <div class="stat-value"
+             id="fraud">
+            0
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-title">
+            LEGITIMATE
+        </div>
+
+        <div class="stat-value"
+             id="legitimate">
+            0
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-title">
+            FRAUD RATE
+        </div>
+
+        <div class="stat-value"
+             id="rate">
+            0%
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="main">
+
+
+<!-- FORM -->
+
+<div class="card">
+
+    <h3>
+        🔍 Transaction Analysis
+    </h3>
+
+    <p class="card-description">
+        Enter transaction details and analyze the transaction.
+    </p>
+
+
+    <div class="form-grid">
+
+        <div>
+
+            <label>
+                Transaction Time
+            </label>
+
+            <input
+                type="number"
+                id="Time"
+                value="0"
+            >
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Transaction Amount (₹)
+            </label>
+
+            <input
+                type="number"
+                id="Amount"
+                value="149.62"
+                step="any"
+            >
+
+        </div>
+
+    </div>
+
+
+    <div class="features-title">
+        Transaction Features
+    </div>
+
+
+    <div
+        class="features"
+        id="features">
+    </div>
+
+
+    <div class="buttons">
+
+        <button
+            class="test-button"
+            onclick="loadLegitimate()">
+
+            🟢 Legitimate Test
+
+        </button>
+
+
+        <button
+            class="test-button"
+            onclick="loadFraud()">
+
+            🔴 Fraud Test
+
+        </button>
+
+    </div>
+
+
+    <button
+        class="analyze"
+        id="analyzeButton"
+        onclick="analyzeTransaction()">
+
+        🔍 Analyze Transaction
+
+    </button>
+
+
+    <div
+        class="loading"
+        id="loading">
+
+        ⏳ Analyzing transaction...
+
+    </div>
+
+</div>
+
+
+<!-- RESULT -->
+
+<div class="card result">
+
+    <h3>
+        🛡️ AI Assessment
+    </h3>
+
+    <p class="card-description">
+        Real-time machine learning prediction
+    </p>
+
+
+    <div
+        class="shield"
+        id="shield">
+
+        🛡️
+
+    </div>
+
+
+    <div
+        class="result-title"
+        id="resultTitle">
+
+        Awaiting Analysis
+
+    </div>
+
+
+    <div
+        class="result-subtitle"
+        id="resultSubtitle">
+
+        Submit a transaction to receive
+        a risk assessment.
+
+    </div>
+
+
+    <div
+        class="probability"
+        id="probability">
+
+        —
+
+    </div>
+
+
+    <div
+        class="risk"
+        id="risk">
+
+        NO ASSESSMENT
+
+    </div>
+
+
+    <div
+        class="recommendation"
+        id="recommendation">
+
+        Your transaction analysis will
+        appear here.
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- HISTORY -->
+
+<section class="card history">
+
+    <h3>
+        🕐 Recent Transactions
+    </h3>
+
+    <p class="card-description">
+        Transactions analyzed by PayShield AI.
+    </p>
+
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>#</th>
+                <th>Time</th>
+                <th>Amount</th>
+                <th>Risk</th>
+                <th>Fraud Probability</th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody id="history">
+
+        </tbody>
+
+    </table>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+    🛡️ PayShield AI
+    • AI-Powered Payment Fraud Detection
+    <br><br>
+    © 2026 PayShield AI
+
+</footer>
+
+
+<script>
+
+
+/* =====================================================
+   CREATE V1 - V28 INPUTS
+===================================================== */
+
+const featureContainer =
+    document.getElementById("features");
+
+
+for (let i = 1; i <= 28; i++) {
+
+    const div =
+        document.createElement("div");
+
+    div.className = "feature";
+
+    div.innerHTML = `
+        <label>V${i}</label>
+
+        <input
+            type="number"
+            id="V${i}"
+            value="0"
+            step="any"
+        >
+    `;
+
+    featureContainer.appendChild(div);
+}
+
+
+/* =====================================================
+   TEST DATA
+===================================================== */
+
+const legitimateData = {
+
+    Time: 0,
+    Amount: 149.62,
+
+    V1: 1.072,
+    V2: -0.343,
+    V3: 1.001,
+    V4: 1.380,
+    V5: -0.344,
+    V6: 0.462,
+    V7: -0.089,
+    V8: 0.304,
+    V9: 0.348,
+    V10: 0.089,
+    V11: 0.172,
+    V12: 0.134,
+    V13: 0.514,
+    V14: -0.451,
+    V15: 1.001,
+    V16: -0.443,
+    V17: 0.008,
+    V18: -0.139,
+    V19: 0.016,
+    V20: 0.012,
+    V21: -0.018,
+    V22: -0.103,
+    V23: -0.113,
+    V24: 0.062,
+    V25: 0.129,
+    V26: -0.189,
+    V27: 0.021,
+    V28: 0.012
+};
+
+
+const fraudData = {
+
+    Time: 406,
+    Amount: 0,
+
+    V1: -2.312227,
+    V2: 1.951992,
+    V3: -1.609851,
+    V4: 3.997906,
+    V5: -0.522188,
+    V6: -1.426545,
+    V7: -2.537387,
+    V8: 1.391657,
+    V9: -2.770089,
+    V10: -2.772272,
+    V11: 3.202033,
+    V12: -2.899907,
+    V13: -0.595222,
+    V14: -4.289254,
+    V15: 0.389724,
+    V16: -1.140747,
+    V17: -2.830056,
+    V18: -0.016822,
+    V19: 0.416956,
+    V20: 0.126911,
+    V21: 0.517232,
+    V22: -0.035049,
+    V23: -0.465211,
+    V24: 0.320198,
+    V25: 0.044519,
+    V26: 0.177840,
+    V27: 0.261145,
+    V28: -0.143276
+};
+
+
+/* =====================================================
+   LOAD TEST DATA
+===================================================== */
+
+function loadData(data) {
+
+    document.getElementById("Time").value =
+        data.Time;
+
+    document.getElementById("Amount").value =
+        data.Amount;
+
+
+    for (let i = 1; i <= 28; i++) {
+
+        document.getElementById(`V${i}`).value =
+            data[`V${i}`];
+
+    }
+
+}
+
+
+function loadLegitimate() {
+
+    loadData(legitimateData);
+
+}
+
+
+function loadFraud() {
+
+    loadData(fraudData);
+
+}
+
+
+/* =====================================================
+   ANALYZE TRANSACTION
+===================================================== */
+
+async function analyzeTransaction() {
+
+    const button =
+        document.getElementById("analyzeButton");
+
+    const loading =
+        document.getElementById("loading");
+
+    button.disabled = true;
+
+    loading.style.display = "block";
+
+
+    /* CREATE REQUEST */
+
+    const data = {
+
+        Time: Number(
+            document.getElementById("Time").value
+        ),
+
+        Amount: Number(
+            document.getElementById("Amount").value
+        )
+
+    };
+
+
+    for (let i = 1; i <= 28; i++) {
+
+        data[`V${i}`] = Number(
+            document.getElementById(`V${i}`).value
+        );
+
+    }
+
+
+    try {
+
+        const response = await fetch(
+            "http://127.0.0.1:8000/predict",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(data)
+            }
+        );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.detail ||
+                result.message ||
+                "Server error"
+            );
+
+        }
+
+
+        if (result.status !== "success") {
+
+            throw new Error(
+                result.message ||
+                "Prediction failed"
+            );
+
+        }
+
+
+        showResult(result);
+
+        saveTransaction(result);
+
+
+    }
+
+    catch (error) {
+
+        document.getElementById("shield")
+            .textContent = "❌";
+
+        document.getElementById("resultTitle")
+            .textContent = "ANALYSIS FAILED";
+
+        document.getElementById("resultSubtitle")
+            .textContent =
+            "Unable to process this transaction.";
+
+        document.getElementById("probability")
+            .textContent = "—";
+
+        document.getElementById("risk")
+            .textContent = "ERROR";
+
+        document.getElementById("recommendation")
+            .textContent =
+            error.message;
+
+    }
+
+    finally {
+
+        button.disabled = false;
+
+        loading.style.display = "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   SHOW RESULT
+===================================================== */
+
+function showResult(result) {
+
+    const probability =
+        Number(result.fraud_probability) * 100;
+
+
+    const fraud =
+        result.is_fraud === true;
+
+
+    document.getElementById("probability")
+        .textContent =
+        probability.toFixed(2) + "%";
+
+
+    document.getElementById("risk")
+        .textContent =
+        result.risk_level + " RISK";
+
+
+    document.getElementById("recommendation")
+        .textContent =
+        result.recommendation;
+
+
+    if (fraud) {
+
+        document.getElementById("shield")
+            .textContent = "🚨";
+
+        document.getElementById("resultTitle")
+            .textContent =
+            "TRANSACTION FLAGGED";
+
+        document.getElementById("resultSubtitle")
+            .textContent =
+            "Potential fraudulent activity detected.";
+
+        document.getElementById("risk")
+            .className = "risk high";
+
+    }
+
+    else {
+
+        document.getElementById("shield")
+            .textContent = "🛡️";
+
+        document.getElementById("resultTitle")
+            .textContent =
+            "TRANSACTION VERIFIED";
+
+        document.getElementById("resultSubtitle")
+            .textContent =
+            "No significant fraud indicators detected.";
+
+        document.getElementById("risk")
+            .className = "risk low";
+
+    }
+
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+function getHistory() {
+
+    return JSON.parse(
+        localStorage.getItem(
+            "payshield_history"
+        ) || "[]"
+    );
+
+}
+
+
+function saveTransaction(result) {
+
+    const history =
+        getHistory();
+
+
+    history.unshift({
+
+        time:
+            document.getElementById("Time").value,
+
+        amount:
+            document.getElementById("Amount").value,
+
+        fraud:
+            result.is_fraud,
+
+        probability:
+            Number(result.fraud_probability) * 100
+
+    });
+
+
+    localStorage.setItem(
+        "payshield_history",
+        JSON.stringify(
+            history.slice(0, 20)
+        )
+    );
+
+
+    displayHistory();
+
+}
+
+
+function displayHistory() {
+
+    const history =
+        getHistory();
+
+
+    const table =
+        document.getElementById("history");
+
+
+    table.innerHTML = "";
+
+
+    let fraudCount = 0;
+
+
+    history.forEach((item, index) => {
+
+        if (item.fraud) {
+            fraudCount++;
+        }
+
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>${index + 1}</td>
+
+            <td>${item.time}</td>
+
+            <td>₹${Number(item.amount).toFixed(2)}</td>
+
+            <td class="${item.fraud ? "high" : "low"}">
+
+                ${item.fraud ? "🔴 HIGH" : "🟢 LOW"}
+
+            </td>
+
+            <td>
+                ${Number(item.probability).toFixed(2)}%
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+
+    document.getElementById("total")
+        .textContent =
+        history.length;
+
+
+    document.getElementById("fraud")
+        .textContent =
+        fraudCount;
+
+
+    document.getElementById("legitimate")
+        .textContent =
+        history.length - fraudCount;
+
+
+    const rate =
+        history.length
+            ? (fraudCount / history.length) * 100
+            : 0;
+
+
+    document.getElementById("rate")
+        .textContent =
+        rate.toFixed(1) + "%";
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+displayHistory();
+
+</script>
+
+
+</body>
+
+</html>
